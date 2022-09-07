@@ -137,6 +137,10 @@ public abstract class AbstractLine<T> {
   public Hologram getHologram() {
     return hologram;
   }
+  
+  public int getEntityId() {
+    return entityID;
+  }
 
   @Override
   public boolean equals(Object o) {
