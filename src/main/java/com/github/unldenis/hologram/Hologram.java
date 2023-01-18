@@ -241,6 +241,12 @@ public class Hologram {
     }
 
     @NotNull
+    public Builder addLines(List<String> lines, boolean clickable) {
+      lines.forEach(line -> addLine(line, clickable));
+      return this;
+    }
+
+    @NotNull
     public Builder addLine(@NotNull ItemStack item) {
       Validate.notNull(item, "Item cannot be null");
       this.lines.addFirst(new Object[]{item});
