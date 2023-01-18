@@ -37,7 +37,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -54,7 +53,6 @@ public class Hologram {
   private Location location;
 
   /**
-   * @param plugin       The org.bukkit.Plugin
    * @param location     The location of the hologram
    * @param placeholders Reference passage of placeholders
    * @param l            Inverted array of hologram lines
@@ -63,16 +61,15 @@ public class Hologram {
   @Deprecated
   @ApiStatus.Internal
   public Hologram(
-      @NotNull Plugin plugin,
       @NotNull Location location,
       @Nullable Placeholders placeholders,
       @NotNull HologramPool pool,
       @NotNull Object[]... l
   ) {
-    this.plugin = plugin;
     this.location = location;
     this.placeholders = placeholders == null ? new Placeholders() : placeholders;
     this.pool = pool;
+    this.plugin = pool.getPlugin();
 
     LinkedList<AbstractLine<?>> tempReversed = new LinkedList<>();
     Location cloned = this.location.clone().subtract(0, 0.28, 0);
@@ -287,7 +284,7 @@ public class Hologram {
       if (location == null || lines.isEmpty() || pool == null) {
         throw new IllegalArgumentException("No location given or not completed");
       }
-      Hologram hologram = new Hologram(pool.getPlugin(), this.location, this.placeholders, this.pool,
+      Hologram hologram = new Hologram(this.location, this.placeholders, this.pool,
           this.lines.toArray(CACHE_ARR));
       hologram.show(player);
       pool.takeCareOf(hologram);
