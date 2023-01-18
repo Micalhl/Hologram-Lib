@@ -49,6 +49,7 @@ public class Hologram {
   protected final Set<Player> seeingPlayers = new CopyOnWriteArraySet<>();
   protected final Set<Player> excludedPlayers = new CopyOnWriteArraySet<>();
   private final Plugin plugin;
+  private final HologramPool pool;
   private final Placeholders placeholders;
   private Location location;
 
@@ -65,11 +66,13 @@ public class Hologram {
       @NotNull Plugin plugin,
       @NotNull Location location,
       @Nullable Placeholders placeholders,
+      @NotNull HologramPool pool,
       @NotNull Object[]... l
   ) {
     this.plugin = plugin;
     this.location = location;
     this.placeholders = placeholders == null ? new Placeholders() : placeholders;
+    this.pool = pool;
 
     LinkedList<AbstractLine<?>> tempReversed = new LinkedList<>();
     Location cloned = this.location.clone().subtract(0, 0.28, 0);
@@ -213,6 +216,11 @@ public class Hologram {
     return placeholders;
   }
 
+  public void destroy() {
+    getSeeingPlayers().forEach(this::hide);
+    pool.remove(this);
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -232,6 +240,7 @@ public class Hologram {
     private final ConcurrentLinkedDeque<Object[]> lines = new ConcurrentLinkedDeque<>();
     private final Placeholders placeholders = new Placeholders();
     private Location location;
+    private HologramPool pool;
 
     @NotNull
     public Builder addLine(@NotNull String line, boolean clickable) {
@@ -261,28 +270,28 @@ public class Hologram {
     }
 
     @NotNull
+    public Builder pool(@NotNull HologramPool pool) {
+      Validate.notNull(pool, "HologramPool cannot be null");
+      this.pool = pool;
+      return this;
+    }
+
+    @NotNull
     public Builder addPlaceholder(@NotNull String key, @NotNull Function<Player, String> result) {
       this.placeholders.add(key, result);
       return this;
     }
 
     @NotNull
-    public Hologram build(@NotNull HologramPool pool) {
+    public Hologram build(@NotNull HologramPool pool, @NotNull Player player) {
       if (location == null || lines.isEmpty() || pool == null) {
         throw new IllegalArgumentException("No location given or not completed");
       }
-      Hologram hologram = new Hologram(pool.getPlugin(), this.location, this.placeholders,
+      Hologram hologram = new Hologram(pool.getPlugin(), this.location, this.placeholders, this.pool,
           this.lines.toArray(CACHE_ARR));
+      hologram.show(player);
       pool.takeCareOf(hologram);
       return hologram;
-    }
-
-    @NotNull
-    public Hologram build(JavaPlugin plugin) {
-      if (location == null || lines.isEmpty()) {
-        throw new IllegalArgumentException("No location given or not completed");
-      }
-      return new Hologram(plugin, this.location, this.placeholders, this.lines.toArray());
     }
   }
 }
