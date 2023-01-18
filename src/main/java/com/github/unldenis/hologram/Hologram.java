@@ -139,7 +139,7 @@ public class Hologram {
     this.seeingPlayers.forEach(tempLine::teleport);
   }
 
-  protected void show(@NotNull Player player) {
+  public void show(@NotNull Player player) {
     this.seeingPlayers.add(player);
     for (AbstractLine<?> line : this.lines) {
       line.show(player);
@@ -149,7 +149,7 @@ public class Hologram {
         () -> Bukkit.getPluginManager().callEvent(new PlayerHologramShowEvent(player, this)));
   }
 
-  protected void hide(@NotNull Player player) {
+  public void hide(@NotNull Player player) {
     for (AbstractLine<?> line : this.lines) {
       line.hide(player);
     }
