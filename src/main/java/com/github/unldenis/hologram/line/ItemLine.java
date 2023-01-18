@@ -52,6 +52,12 @@ public class ItemLine extends AbstractLine<ItemStack> {
   }
 
   @Override
+  public void update(ItemStack line) {
+    this.obj = line;
+    update();
+  }
+
+  @Override
   @NotNull
   @Unmodifiable
   public ItemStack get() {

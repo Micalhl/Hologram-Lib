@@ -48,6 +48,12 @@ public class TextLine extends AbstractLine<String> {
   }
 
   @Override
+  public void update(String line) {
+    this.obj = line;
+    update();
+  }
+
+  @Override
   protected void update(@NotNull Player player) {
     byte spawnBefore = (byte) ((isEmpty ? 1 : 0) | (obj.isEmpty() ? 1 : 0) << 1);
     /*

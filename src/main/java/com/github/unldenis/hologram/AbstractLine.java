@@ -92,6 +92,8 @@ public abstract class AbstractLine<T> {
     hologram.seeingPlayers.forEach(this::update);
   }
 
+  public abstract void update(T line);
+
   public void setAnimation(@NotNull Animation a) {
     Validate.notNull(animation, "Animation cannot be null");
     Animation animation = a.newInstance();
