@@ -37,6 +37,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -268,6 +269,14 @@ public class Hologram {
           this.lines.toArray(CACHE_ARR));
       pool.takeCareOf(hologram);
       return hologram;
+    }
+
+    @NotNull
+    public Hologram build(JavaPlugin plugin) {
+      if (location == null || lines.isEmpty()) {
+        throw new IllegalArgumentException("No location given or not completed");
+      }
+      return new Hologram(plugin, this.location, this.placeholders, this.lines.toArray());
     }
   }
 }
