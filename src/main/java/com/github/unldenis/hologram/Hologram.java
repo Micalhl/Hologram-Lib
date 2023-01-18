@@ -182,6 +182,10 @@ public class Hologram {
     return excludedPlayers;
   }
 
+  public HologramPool getPool() {
+    return pool;
+  }
+
   public boolean isExcluded(@NotNull Player player) {
     return this.excludedPlayers.contains(player);
   }
