@@ -280,7 +280,7 @@ public class Hologram {
     }
 
     @NotNull
-    public Hologram build(@NotNull HologramPool pool, @NotNull Player player) {
+    public Hologram build(@NotNull Player player) {
       if (location == null || lines.isEmpty() || pool == null) {
         throw new IllegalArgumentException("No location given or not completed");
       }
