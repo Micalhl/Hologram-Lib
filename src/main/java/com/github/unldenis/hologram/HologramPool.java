@@ -72,6 +72,22 @@ public class HologramPool implements Listener {
         hologramTick();
     }
 
+    public double getSpawnDistance() {
+        return spawnDistance;
+    }
+
+    public float getMinHitDistance() {
+        return minHitDistance;
+    }
+
+    public float getMaxHitDistance() {
+        return maxHitDistance;
+    }
+
+    public Collection<Hologram> getHolograms() {
+        return holograms;
+    }
+
     @EventHandler
     public void handleRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
@@ -120,7 +136,7 @@ public class HologramPool implements Listener {
         }
     }
 
-    protected Plugin getPlugin() {
+    public Plugin getPlugin() {
         return plugin;
     }
 
