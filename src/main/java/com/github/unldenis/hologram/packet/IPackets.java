@@ -226,9 +226,12 @@ public interface IPackets {
                         0, WrappedDataWatcher.Registry.get(Byte.class));
                 watcher.setObject(visible, (byte) 0x20);
             }
+            // FIXME: MCStarrySky: Remove placeholder function because it didn't work and we needn't it :(
+            /*
             if (placeholders != null) {
                 Optional<?> opt = Optional.of(WrappedChatComponent.fromChatMessage(
                         placeholders.parse(nameTag, player))[0].getHandle());
+
                 watcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(2,
                         WrappedDataWatcher.Registry.getChatComponentSerializer(true)), opt);
 
@@ -236,6 +239,8 @@ public interface IPackets {
                         3, WrappedDataWatcher.Registry.get(Boolean.class));
                 watcher.setObject(nameVisible, true);
             }
+
+             */
             if (setSmall) {
                 WrappedDataWatcher.WrappedDataWatcherObject small = new WrappedDataWatcher.WrappedDataWatcherObject(
                         15, WrappedDataWatcher.Registry.get(Byte.class));
