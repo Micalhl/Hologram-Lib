@@ -47,6 +47,7 @@ public class Hologram {
   protected final List<AbstractLine<?>> lines;
   protected final Set<Player> seeingPlayers = new CopyOnWriteArraySet<>();
   protected final Set<Player> excludedPlayers = new CopyOnWriteArraySet<>();
+  private final Player player;
   private final Plugin plugin;
   private final HologramPool pool;
   private final Placeholders placeholders;
@@ -64,11 +65,13 @@ public class Hologram {
       @NotNull Location location,
       @Nullable Placeholders placeholders,
       @NotNull HologramPool pool,
+      @NotNull Player player,
       @NotNull Object[]... l
   ) {
     this.location = location;
     this.placeholders = placeholders == null ? new Placeholders() : placeholders;
     this.pool = pool;
+    this.player = player;
     this.plugin = pool.getPlugin();
 
     LinkedList<AbstractLine<?>> tempReversed = new LinkedList<>();
@@ -166,7 +169,7 @@ public class Hologram {
   }
 
   public boolean isShownFor(@NotNull Player player) {
-    return this.seeingPlayers.contains(player);
+    return this.seeingPlayers.contains(player) && this.player == player;
   }
 
   public void addExcludedPlayer(@NotNull Player player) {
@@ -187,7 +190,7 @@ public class Hologram {
   }
 
   public boolean isExcluded(@NotNull Player player) {
-    return this.excludedPlayers.contains(player);
+    return !this.seeingPlayers.contains(player);
   }
 
   @NotNull
@@ -198,6 +201,10 @@ public class Hologram {
 
   protected void removeSeeingPlayer(Player player) {
     this.seeingPlayers.remove(player);
+  }
+
+  public Player getPlayer() {
+    return player;
   }
 
   @NotNull
@@ -288,7 +295,7 @@ public class Hologram {
       if (location == null || lines.isEmpty() || pool == null) {
         throw new IllegalArgumentException("No location given or not completed");
       }
-      Hologram hologram = new Hologram(this.location, this.placeholders, this.pool,
+      Hologram hologram = new Hologram(this.location, this.placeholders, this.pool, player,
           this.lines.toArray(CACHE_ARR));
       hologram.show(player);
       pool.takeCareOf(hologram);
