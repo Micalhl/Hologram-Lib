@@ -21,11 +21,11 @@ package com.github.unldenis.hologram.util;
 
 public final class Validate {
 
-  public static <T> T notNull(T object, String message) {
-    if (object == null) {
-      throw new NullPointerException(message);
+    public static <T> T notNull(T object, String message) {
+        if (object == null) {
+            throw new NullPointerException(message);
+        }
+        return object;
     }
-    return object;
-  }
 
 }

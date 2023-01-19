@@ -30,37 +30,37 @@ import org.jetbrains.annotations.Unmodifiable;
 
 public class ItemLine extends AbstractLine<ItemStack> {
 
-  private final PacketContainerSendable entityMetadataPacket;
+    private final PacketContainerSendable entityMetadataPacket;
 
-  public ItemLine(@NotNull Hologram hologram, @NotNull ItemStack obj) {
-    super(hologram, obj);
-    entityMetadataPacket = PacketsFactory.get().metadataPacket(entityID);
-  }
+    public ItemLine(@NotNull Hologram hologram, @NotNull ItemStack obj) {
+        super(hologram, obj);
+        entityMetadataPacket = PacketsFactory.get().metadataPacket(entityID);
+    }
 
-  @Override
-  protected void show(@NotNull Player player) {
-    super.show(player);
-    entityMetadataPacket.send(player);
-    this.update(player);
-  }
+    @Override
+    protected void show(@NotNull Player player) {
+        super.show(player);
+        entityMetadataPacket.send(player);
+        this.update(player);
+    }
 
-  @Override
-  protected void update(@NotNull Player player) {
-    PacketsFactory.get()
-        .equipmentPacket(entityID, obj)
-        .send(player);
-  }
+    @Override
+    protected void update(@NotNull Player player) {
+        PacketsFactory.get()
+                .equipmentPacket(entityID, obj)
+                .send(player);
+    }
 
-  @Override
-  public void update(ItemStack line) {
-    this.obj = line;
-    update();
-  }
+    @Override
+    public void update(ItemStack line) {
+        this.obj = line;
+        update();
+    }
 
-  @Override
-  @NotNull
-  @Unmodifiable
-  public ItemStack get() {
-    return obj.clone();
-  }
+    @Override
+    @NotNull
+    @Unmodifiable
+    public ItemStack get() {
+        return obj.clone();
+    }
 }
