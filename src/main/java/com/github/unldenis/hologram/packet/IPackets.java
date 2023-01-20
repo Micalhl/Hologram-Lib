@@ -249,7 +249,7 @@ public interface IPackets {
 
             // MCStarrySky: Use MiniMessage to solve name problem
 
-            watcher.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true),
+            watcher.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(),
                     WrappedChatComponent.fromJson(GsonComponentSerializer.gson().serialize(text)).getHandle()); // Custom name
             watcher.setObject(3, WrappedDataWatcher.Registry.get(Boolean.class), true, false);
 
