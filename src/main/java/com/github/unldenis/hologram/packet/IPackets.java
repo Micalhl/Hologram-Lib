@@ -36,6 +36,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -218,6 +221,8 @@ public interface IPackets {
         @Override
         public PacketContainerSendable metadataPacket(int entityID, String nameTag, Player player,
                                                       Placeholders placeholders, boolean setInvisible, boolean setSmall) {
+            final Component text = MiniMessage.miniMessage().deserialize(nameTag);
+
             PacketContainerSendable packet = newPacket(PacketType.Play.Server.ENTITY_METADATA);
             packet.getIntegers().write(0, entityID);
             WrappedDataWatcher watcher = new WrappedDataWatcher();
@@ -241,6 +246,13 @@ public interface IPackets {
             }
 
              */
+
+            // MCStarrySky: Use MiniMessage to solve name problem
+
+            watcher.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true),
+                    Optional.of(WrappedChatComponent.fromJson(GsonComponentSerializer.gson().serialize(text)).getHandle())); // Custom name
+            watcher.setObject(3, WrappedDataWatcher.Registry.get(Boolean.class), true, false);
+
             if (setSmall) {
                 WrappedDataWatcher.WrappedDataWatcherObject small = new WrappedDataWatcher.WrappedDataWatcherObject(
                         15, WrappedDataWatcher.Registry.get(Byte.class));
